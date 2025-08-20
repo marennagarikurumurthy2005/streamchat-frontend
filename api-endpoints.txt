@@ -1,0 +1,133 @@
+A. User Authentication
+1. Register
+Method: POST
+
+URL: http://127.0.0.1:8000/auth/register/
+
+Body (JSON):
+
+json
+Copy code
+{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "Test@1234"
+}
+Expected Response:
+
+json
+Copy code
+{"message": "User registered successfully"}
+2. Login
+Method: POST
+
+URL: http://127.0.0.1:8000/auth/login/
+
+Body (JSON):
+
+json
+Copy code
+{
+    "username": "testuser",
+    "password": "Test@1234"
+}
+Expected Response:
+
+json
+Copy code
+{"token": "<JWT_TOKEN>"}
+✅ Save this JWT token — you’ll send it in the Authorization header for protected routes:
+
+makefile
+Copy code
+Authorization: Bearer <JWT_TOKEN>
+3. Forgot Password
+Method: POST
+
+URL: http://127.0.0.1:8000/auth/forgot-password/
+
+Body (JSON):
+
+json
+Copy code
+{"email": "test@example.com"}
+Expected Response: Email sent message.
+
+4. Reset Password
+Method: POST
+
+URL: http://127.0.0.1:8000/auth/reset-password/<uid>/<token>/
+
+Replace <uid> and <token> from email link.
+
+Body (JSON):
+
+json
+Copy code
+{"new_password": "NewPass@123"}
+B. Movies Search (TMDb API)
+Endpoint:
+Method: GET
+
+URL: http://127.0.0.1:8000/movies/search/?query=Inception
+
+Headers:
+
+makefile
+Copy code
+Authorization: Bearer <JWT_TOKEN>
+Expected Response:
+
+json
+Copy code
+[
+    {
+        "title": "Inception",
+        "release_date": "2010-07-16",
+        "overview": "...",
+        "poster_url": "https://image.tmdb.org/t/p/w500/xyz.jpg",
+        "tmdb_url": "https://www.themoviedb.org/movie/12345"
+    }
+]
+C. Songs Search (Spotify API)
+Endpoint:
+Method: GET
+
+URL: http://127.0.0.1:8000/music/search/?query=Shape%20of%20You
+
+Headers:
+
+makefile
+Copy code
+Authorization: Bearer <JWT_TOKEN>
+Expected Response:
+
+json
+Copy code
+[
+    {
+        "title": "Shape of You",
+        "artist": "Ed Sheeran",
+        "spotify_url": "https://open.spotify.com/track/xyz",
+        "embed_url": "https://open.spotify.com/embed/track/xyz"
+    }
+]
+D. Search History
+Endpoint:
+Method: GET
+
+URL: http://127.0.0.1:8000/history/
+
+Headers:
+
+makefile
+Copy code
+Authorization: Bearer <JWT_TOKEN>
+Expected Response:
+
+json
+Copy code
+[
+    {"query": "Inception", "type": "movie", "time": "2025-08-13T11:32:00Z"},
+    {"query": "Shape of You", "type": "song", "time": "2025-08-13T11:35:00Z"}
+]
